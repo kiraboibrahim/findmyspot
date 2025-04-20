@@ -1,0 +1,5 @@
+services:
+  frontend:
+    image: harmless138/dojohub:0.0.1-findmyspot
+    ports:
+      - "5001:80"

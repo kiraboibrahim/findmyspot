@@ -1,5 +1,1 @@
-services:
-  frontend:
-    build: .
-    ports:
-      - "5001:80"
+

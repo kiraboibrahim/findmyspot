@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import { APIProvider, Map, Marker, InfoWindow } from '@vis.gl/react-google-maps'
 import AutocompleteSuggestion from './AutoCompleteSuggestions'
@@ -190,7 +190,7 @@ const ParkingSpots: React.FC = () => {
     <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <div className="max-w-full mx-auto">
         <div className="mb-4 fixed w-1/2 top-10 left-1/2 transform -translate-x-1/2 z-10">
-          <AutocompleteSuggestion onPlaceSelect={(place) => handleSelect(place)} />
+          <AutocompleteSuggestion onPlaceSelect={(place) => place && handleSelect(place)} />
 
 
           {selectedPlace && !selectedSpot && (
@@ -279,11 +279,27 @@ const renderStars = (rating: number) => {
   return stars;
 };
 
+
 const ParkingSpotDetail: React.FC<ParkingSpotDetailProps> = ({ spot, onClose }) => {
+  const [animateIn, setAnimateIn] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation after first render
+    setAnimateIn(true);
+  }, []);
+
+  // For xs screens: slide up from bottom covering 80% height.
+  // For sm and up: slide in from the right.
+  const containerClasses = `
+    fixed z-50 transform transition-transform duration-300 ease-in-out
+    top-0 right-0
+    ${animateIn ? 'translate-y-0 sm:translate-x-0' : 'translate-y-full sm:translate-x-full'}
+  `;
   return (
-    <div className="fixed top-0 right-0  z-50">
+    <div className={containerClasses}
+    >
       {/* Modal container */}
-      <div className="relative flex flex-col bg-white shadow-lg max-w-md min-w-sm w-full h-[100vh] z-10">
+      <div className="relative flex flex-col bg-white shadow-lg h-[100vh] w-[100vw] sm:max-w-sm z-10">
         {/* Close button */}
         <button
           onClick={onClose}

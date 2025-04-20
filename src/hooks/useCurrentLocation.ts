@@ -42,7 +42,7 @@ export const useCurrentLocation = (pollInterval: number = 3000) => {
       });
       setError(null);
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:23-alpine3 AS build
+FROM node:23-alpine3.20 AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
